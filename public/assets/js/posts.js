@@ -1,3 +1,4 @@
+
 //获取服务器端的文化列表
 $.ajax({
     type:'get',
@@ -31,3 +32,32 @@ function changePage(page){
         }
     })
 }
+//筛选功能
+$.ajax({
+    type:'get',
+    url:'/categories',
+    success:function(result){
+       // console.log(result);
+        var html = template('tpl-post',{data:result})
+        //console.log(html);
+        
+        $('#category').html(html)
+    }
+})
+$('#form-list').on('submit',function(){
+    var formData = $(this).serialize()
+    console.log(formData);
+    
+    $.ajax({
+        type:'get',
+        url:'/posts',
+        data:formData,
+        success:function(result){
+            var html = template('postsTpl',result)
+            $('#postsBox').html(html)
+            var page = template('listTpl',result)
+            $("#listBox").html(page)
+        }
+    })
+    return false
+})

@@ -28,14 +28,14 @@
       <div class="page-action">
         <!-- show when multiple checked -->
         <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
-        <form class="form-inline">
-          <select name="" class="form-control input-sm">
-            <option value="">所有分类</option>
+        <form class="form-inline" id='form-list'>
+          <select name="category" class="form-control input-sm" id='category'>
+          
           </select>
-          <select name="" class="form-control input-sm">
-            <option value="">所有状态</option>
-            <option value="">草稿</option>
-            <option value="">已发布</option>
+          <select name="state" class="form-control input-sm">
+              <option value="">发布状态</option>
+            <option value="0">草稿</option>
+            <option value="1">已发布</option>
           </select>
           <button class="btn btn-default btn-sm">筛选</button>
         </form>
@@ -124,12 +124,20 @@
     <li><a href="JavaScript:;" onclick='changePage({{page-1}})'>上一页</a></li>
     {{/if}}
     {{each display}}
-        <li><a href="JavaScript:;" onclick='changePage({{$value}})'>{{$value}}</a></li>
+        <li class="{{$value==page ? 'active' : ''}}"><a href="JavaScript:;" onclick='changePage({{$value}})'>{{$value}}</a></li>
     {{/each}}
     {{if page < pages}}
           <li><a href="JavaScript:;" onclick='changePage({{page+1}})'>下一页</a></li>
      {{/if}}
   
+  
+  </script>
+  <!-- 实现筛选功能 -->
+  <script type='text/html' id='tpl-post'>
+    <option value="">所有文章</option>
+  {{each data}}
+    <option value="{{$value._id}}">{{$value.title}}</option>
+  {{/each}}
   
   </script>
   <script>NProgress.done()</script>
