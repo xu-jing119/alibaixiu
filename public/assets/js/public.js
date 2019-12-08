@@ -54,3 +54,18 @@ $.ajax({
         $('#commentBox').html(html)
     }
 })
+//获取列表分类
+$.ajax({
+    type:'get',
+    url:'/categories',
+    success:function(resp){
+       console.log(resp);
+        var htmlTpl = `
+        {{each data}}
+        <li><a href="javascript:;"><i class="fa fa-glass"></i>{{$value.title}}</a></li>
+       {{/each}}
+        `
+        var html = template.render(htmlTpl,{data:resp})
+        $('.navBox').html(html)
+    }
+})
