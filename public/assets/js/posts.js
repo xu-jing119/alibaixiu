@@ -4,7 +4,7 @@ $.ajax({
     type:'get',
     url:'/posts',
     success:function(result){
-        console.log(result);
+      //  console.log(result);
         var html = template('postsTpl',result)
         $('#postsBox').html(html)
         var page = template('listTpl',result)
@@ -24,7 +24,7 @@ function changePage(page){
         url:'/posts',
         data:{page:page},
         success:function(result){
-            console.log(result);
+            //console.log(result);
             var html = template('postsTpl',result)
             $('#postsBox').html(html)
             var page = template('listTpl',result)
@@ -46,7 +46,7 @@ $.ajax({
 })
 $('#form-list').on('submit',function(){
     var formData = $(this).serialize()
-    console.log(formData);
+   // console.log(formData);
     
     $.ajax({
         type:'get',
@@ -60,4 +60,20 @@ $('#form-list').on('submit',function(){
         }
     })
     return false
+})
+//实现文章删除功能
+$('#postsBox').on('click','.delete',function(){
+    var id = $(this).attr('data-id')
+        console.log(id);
+    if(confirm('您是否确认删除该文章')){
+        $.ajax({
+            type:'delete',
+            url:'/posts/' + id,
+            success:function(result){
+               // console.log(result);
+                location.reload()
+            }
+        })
+        
+    }
 })

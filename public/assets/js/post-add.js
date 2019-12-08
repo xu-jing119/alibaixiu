@@ -3,7 +3,7 @@ $.ajax({
     url:'/categories',
     type:'get',
     success:function(result){
-        console.log(result);
+      //  console.log(result);
         var html = template('postadd-tpl',{data:result})
         $("#category").html(html)
     }
@@ -40,3 +40,62 @@ $("#addForm").on('submit',function(){
     })
     return false
 })
+//文章编辑功能
+function getUrlParam(name){
+  var query =location.search.substr(1).split('&')
+  //console.log(query);
+  
+ for(var i = 0; i <query.length; i++){
+   var temp =  query[i].split('=')
+   if(temp[0] == name){
+    return temp[1]
+   }
+  //如果没有对应的name 那就返回一个任意数  这里设置为-1
+   return -1
+ }
+    
+}
+console.log(getUrlParam('id'))
+// 当找得到id时 证明进入修改模式
+var id = getUrlParam('id')
+if(id != -1){
+    $.ajax({
+        type:'put',
+        url:'/posts/' +id,
+        success:function(result){
+            $.ajax({
+                url:'/categories',
+                type:'get',
+                success:function(category){
+                   console.log(category)
+                   result.categories = category
+                   console.log(result)
+                   var html = template('modifyTpl',result)
+                   $('#father').html(html)
+                }
+            }) 
+        }
+    }) 
+}  
+//当提交修改内容时
+$("#father").on('submit','#modifyForm',function(){
+    var formData = $(this).serialize()
+   var id = $(this).attr('data-id')
+$.ajax({
+    type:'put',
+    url:'/posts/' + id,
+    data:formData,
+    success:function(){
+        location.href = '/admin/posts.html'
+    }
+})
+    return false
+})
+
+
+
+
+
+
+
+
